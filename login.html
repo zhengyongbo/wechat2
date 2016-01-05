@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>会员登录</title>
+    <meta name="description" content="">
+    <link rel="stylesheet" href="asserts/styles/vendor.min.css">
+    
+    	<link rel="stylesheet" href="asserts/styles/main.css">
+    
+</head>
+
+
+<body>
+    
+		<nav class="navbar navbar-fixed-top my-nav">
+    <div class="container">
+        <div class="row top-panel">
+        	<a href="index.html" class="btn btn-xs left-angel">        		
+	            <i class="fa fa-chevron-left"></i>
+        	</a>
+            <h3 class="text-center no-margin">会员登录</h3>
+
+            
+				<a href="register.html" class="btn btn-sm btn-info right-angel hh-font-size-16">        		
+	            	注册
+        		</a>
+            
+        </div>
+    </div>
+</nav>
+
+    
+    <div class="container panel full-height">
+        <div class="row hh-mlr--10">
+        	<div class="login-container">
+    <div class="grid-container">
+      <form action="" class="form form-login">
+        
+        
+        
+          <div class="form-field">
+            <label class="mdi-action-account-box" for="input-1"></label>
+            <input id="input-1" type="text" class="form-input" placeholder="手机号码" >
+
+            
+          </div>
+        
+          <div class="form-field">
+            <label class="mdi-action-lock" for="input-2"></label>
+            <input id="input-2" type="password" class="form-input" placeholder="请输入密码" >
+
+            
+          </div>
+        
+      
+        <div class="form-field">
+            <button id="submit" class="btn btn-block btn-warning btn-lg btn-raised">登录</button>
+        </div>
+      </form>
+      
+      <p class="text-right"><a href="forget_password.html">忘记密码？</a></p>
+      
+    </div>
+  </div>
+
+
+<div class="modal fade" id="showMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">提示信息</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage" style="margin-top:15px;"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-raised" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+        
+
+        
+    </div>
+    <div class="container go-top" id="fixed-actions">
+            <div class="full-width">
+                <a href="javascript:void(0)" id="scrollTop" class="btn btn-info btn-fab btn-raised mdi-hardware-keyboard-capslock"></a>
+            </div>
+        </div>
+    
+
+    <script type="text/javascript" src=" asserts/scripts/vendor.min.js "></script>
+
+
+	<script type="text/javascript" src=" asserts/scripts/main.js "></script>
+
+
+
+<script>
+function showMessage(msg){
+	$('#modalMessage').text(msg);
+	$('#showMessage').modal('show');
+};
+
+$("#submit").click(function(){
+    var Mobile = $("#input-1").val(); if(Mobile ==""){ showMessage("手机号码未填！");return false; }
+    var PassWord = $("#input-2").val(); if(PassWord ==""){showMessage("密码未填！");return false; }
+    $.post(API+"/User/login",{Mobile:Mobile,Password:PassWord},function(data){
+        if(data.status < 0){ showMessage(data.msg);return false;}
+        $.cookie("UserID",data.result.userInfo.ID,{expires:60*60*24*365,path: '/'})
+        $.cookie("UserName",data.result.userInfo.Name,{expires:60*60*24*365,path: '/'})
+        $.cookie("UserMobile",data.result.userInfo.Mobile,{expires:60*60*24*365,path: '/'})
+        $.cookie("UserEmail",data.result.userInfo.Email,{expires:60*60*24*365,path: '/'})
+        window.history.go(-1);
+    },"jsonp")       
+});
+</script>
+
+
+    
+
+</body>
+</html>
